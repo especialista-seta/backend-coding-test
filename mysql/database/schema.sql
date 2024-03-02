@@ -1,0 +1,6 @@
+CREATE TABLE task_entity (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  description TEXT,
+  completed BOOLEAN DEFAULT FALSE,
+  priority ENUM('LOW', 'MEDIUM', 'HIGH') NOT NULL DEFAULT 'LOW'
+);

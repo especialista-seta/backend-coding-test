@@ -1,0 +1,1 @@
+INSERT INTO demo.task_entity (id, description, completed, priority) VALUES (1, 'Description 1', 0, 1);
