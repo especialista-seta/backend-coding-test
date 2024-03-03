@@ -45,7 +45,7 @@ public class TaskControllerTest {
     private MockMvc server;
 
     @BeforeEach
-    public void setup() throws Exception {
+    public void setup() {
         server = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
     }
 

@@ -1,6 +1,7 @@
 package com.example.demo.integration;
 
 import com.example.demo.entity.TaskEntity;
+import com.example.demo.entity.TaskPriority;
 import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -82,6 +83,56 @@ public class IntegrationTest {
                 .exchange("/task/3", HttpMethod.GET, new HttpEntity<>(headers), TaskEntity.class);
         assertThat(response2.getStatusCode(), is(HttpStatus.OK));
         assertThat(Objects.requireNonNull(response2.getBody()).getTaskId(), is(3));
+    }
 
+    @Test
+    public void whenUpdateTask_thenReturnTasks() {
+        JSONObject task = new JSONObject();
+        task.put("description", "Task 1");
+        task.put("completed", true);
+        task.put("priority", "HIGH");
+
+        ResponseEntity<TaskEntity> response0 = restTemplate
+                .exchange("/task/1", HttpMethod.GET, new HttpEntity<>(headers), TaskEntity.class);
+        assertThat(response0.getStatusCode(), is(HttpStatus.OK));
+        assertThat(Objects.requireNonNull(response0.getBody()).getTaskId(), is(1));
+        assertThat(Objects.requireNonNull(response0.getBody()).isCompleted(), is(false));
+        assertThat(Objects.requireNonNull(response0.getBody()).getPriority(), is(TaskPriority.LOW));
+
+
+        ResponseEntity<TaskEntity> response = restTemplate
+                .exchange("/task/1", HttpMethod.PUT, new HttpEntity<>(task.toJSONString(), headers), TaskEntity.class);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+
+        ResponseEntity<TaskEntity> response2 = restTemplate
+                .exchange("/task/1", HttpMethod.GET, new HttpEntity<>(headers), TaskEntity.class);
+        assertThat(response2.getStatusCode(), is(HttpStatus.OK));
+        assertThat(Objects.requireNonNull(response2.getBody()).getTaskId(), is(1));
+        assertThat(Objects.requireNonNull(response2.getBody()).isCompleted(), is(true));
+        assertThat(Objects.requireNonNull(response2.getBody()).getPriority(), is(TaskPriority.HIGH));
+    }
+
+    @Test
+    public void whenDeleteTask_thenReturnTasks() {
+        ResponseEntity<TaskEntity> response0 = restTemplate
+                .exchange("/task/1", HttpMethod.GET, new HttpEntity<>(headers), TaskEntity.class);
+        assertThat(response0.getStatusCode(), is(HttpStatus.OK));
+        assertThat(Objects.requireNonNull(response0.getBody()).getTaskId(), is(1));
+
+        ResponseEntity<TaskEntity> response = restTemplate
+                .exchange("/task/1", HttpMethod.DELETE, new HttpEntity<>(headers), TaskEntity.class);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+
+        ResponseEntity<TaskEntity> response2 = restTemplate
+                .exchange("/task/1", HttpMethod.GET, new HttpEntity<>(headers), TaskEntity.class);
+        assertThat(response2.getStatusCode(), is(HttpStatus.NOT_FOUND));
+    }
+
+    @Test
+    public void whenGetAllTasks_thenReturnTasks() {
+        ResponseEntity<TaskEntity[]> response = restTemplate
+                .exchange("/task", HttpMethod.GET, new HttpEntity<>(headers), TaskEntity[].class);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().length, is(2));
     }
 }

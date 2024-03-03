@@ -57,13 +57,16 @@ public class TaskService {
     public Optional<TaskEntity> updateTask(int id, TaskEntity taskEntity) {
         return taskRepository
                 .findById(id)
-                .flatMap(task -> Optional.of(taskRepository.save(taskEntity)));
+                .flatMap(task -> {
+                    taskEntity.setTaskId(task.getTaskId());
+                    return Optional.of(taskRepository.save(taskEntity));
+                });
     }
 
     public Optional<TaskEntity> deleteTask(int id) {
         return taskRepository.findById(id)
                 .map(task -> {
-                    taskRepository.delete(task);
+                    taskRepository.deleteById(id);
                     return Optional.of(task);
                 })
                 .orElse(Optional.empty());

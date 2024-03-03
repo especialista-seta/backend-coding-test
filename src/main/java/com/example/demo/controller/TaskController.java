@@ -30,8 +30,8 @@ public class TaskController {
 
     @Operation(summary = "Get all tasks", description = "Get all tasks",
             parameters = {
-                    @Parameter(name = "priority", description = "", in = ParameterIn.QUERY, schema = @Schema(implementation = TaskPriority.class)),
-                    @Parameter(name = "completed", description = "", in = ParameterIn.QUERY, schema = @Schema(implementation = Boolean.class)),
+                    @Parameter(name = "priority", description = "Priority", in = ParameterIn.QUERY, schema = @Schema(implementation = TaskPriority.class)),
+                    @Parameter(name = "completed", description = "Completed", in = ParameterIn.QUERY, schema = @Schema(implementation = Boolean.class)),
                     @Parameter(name = "sortDirection", description = "Sort tasks", schema = @Schema(implementation = SortDirection.class)),
                     @Parameter(name = "sortField", description = "Sort field", schema = @Schema(implementation = SortField.class))
             })
