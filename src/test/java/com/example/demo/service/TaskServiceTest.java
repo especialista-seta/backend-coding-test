@@ -27,14 +27,20 @@ public class TaskServiceTest {
     }
 
     @Test
-    void whenCallingSayHello_thenReturnHello() {
+    void whenGetSingleTask_thenReturnSingleTask() {
+        TaskEntity task = new TaskEntity();
+        task.setTaskId(1);
+        task.setDescription("task 1");
+        task.setCompleted(false);
+        task.setPriority(TaskPriority.LOW);
+
         when(taskRepository.findById(1))
-                .thenReturn(Optional.of(new TaskEntity(1, "task 1", false, TaskPriority.LOW)));
+                .thenReturn(Optional.of(task));
 
         Optional<TaskEntity> result = taskService.getTaskById(1);
 
         assert result.isPresent();
-        assert result.get().getId() == 1;
+        assert result.get().getTaskId() == 1;
         assert result.get().getDescription().equals("task 1");
         assert !result.get().isCompleted();
         assert result.get().getPriority().equals(TaskPriority.LOW);

@@ -1,14 +1,21 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.TaskEntity;
+import com.example.demo.entity.TaskPriority;
 import com.example.demo.service.TaskService;
+import com.example.demo.util.SortDirection;
+import com.example.demo.util.SortField;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Tag(name = "Task", description = "Task Operations")
 @RestController
@@ -21,10 +28,23 @@ public class TaskController {
         this.taskService = taskService;
     }
 
-    @Operation(summary = "Get all tasks", description = "Get all tasks")
+    @Operation(summary = "Get all tasks", description = "Get all tasks",
+            parameters = {
+                    @Parameter(name = "priority", description = "", in = ParameterIn.QUERY, schema = @Schema(implementation = TaskPriority.class)),
+                    @Parameter(name = "completed", description = "", in = ParameterIn.QUERY, schema = @Schema(implementation = Boolean.class)),
+                    @Parameter(name = "sortDirection", description = "Sort tasks", schema = @Schema(implementation = SortDirection.class)),
+                    @Parameter(name = "sortField", description = "Sort field", schema = @Schema(implementation = SortField.class))
+            })
     @GetMapping
-    public ResponseEntity<List<TaskEntity>> getAllTasks() {
-        return ResponseEntity.ok().body(taskService.getAllTasks());
+    public ResponseEntity<List<TaskEntity>> getAllTasks(
+            @RequestParam(required = false) @Parameter(hidden = true) Map<String, String> filter,
+            @RequestParam(required = false, defaultValue = "ASC") SortDirection sortDirection,
+            @RequestParam(required = false, defaultValue = "PRIORITY") SortField sortField
+    ) {
+
+        return ResponseEntity
+                .ok()
+                .body(taskService.getAllTasks(filter, Sort.by(Sort.Direction.fromString(sortDirection.getSortDirection()), sortField.getSortField())));
     }
 
     @Operation(summary = "Get task by id", description = "Get task by id", parameters = {

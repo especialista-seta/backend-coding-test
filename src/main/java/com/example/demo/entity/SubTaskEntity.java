@@ -6,29 +6,27 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.util.Set;
 
 @Setter
 @Getter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class TaskEntity {
+public class SubTaskEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int taskId;
+    private int subTaskId;
 
     private String description;
 
     private boolean completed;
 
-    @Enumerated(EnumType.STRING)
-    private TaskPriority priority;
+    private int taskId;
 
-    private Timestamp created;
+    private int priority;
 
-    @OneToMany(mappedBy = "taskEntity", fetch = FetchType.LAZY)
-    private Set<SubTaskEntity> subTasks;
+    @ManyToOne
+    @JoinColumn(name = "taskId", nullable = false, insertable = false, updatable = false)
+    private TaskEntity taskEntity;
 }

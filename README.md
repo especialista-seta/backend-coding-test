@@ -1,7 +1,7 @@
 # Spring Boot to-do app challenge
 
-With this challenge we want to see your skills and the quality of the code, we will take into account the use of SOLID principles. You can use all the tools and libraries you want!
-
+With this challenge we want to see your skills and the quality of the code, we will take into account the use of SOLID
+principles. You can use all the tools and libraries you want!
 
 ## Required tools
 
@@ -22,9 +22,14 @@ Develop the necessary functionalities for the application to be able to perform 
 
 ##### Optional
 
-1. Improve the request that returns a list of tasks by adding the possibility to order and filter the results, for example:
+1. Improve the request that returns a list of tasks by adding the possibility to order and filter the results, for
+   example:
 
     - Order results by priority or creation date.
     - Filter results by priority and/or completion.
-    
+
 2. Create a new entity called *SubtaskEntity* that allows one task to have multiple subtasks.
+
+####
+
+docker-compose rm -v -f db && docker-compose up
