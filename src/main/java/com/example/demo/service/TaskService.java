@@ -61,8 +61,10 @@ public class TaskService {
                     task.setCompleted(taskEntity.isCompleted());
                     task.setDescription(taskEntity.getDescription());
                     task.setPriority(taskEntity.getPriority());
-                    task.getSubTasks().clear();
-                    task.getSubTasks().addAll(taskEntity.getSubTasks());
+                    if (taskEntity.getSubTasks() != null) {
+                        task.getSubTasks().clear();
+                        task.getSubTasks().addAll(taskEntity.getSubTasks());
+                    }
                     return Optional.of(taskRepository.save(task));
                 });
     }
