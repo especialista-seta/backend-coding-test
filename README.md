@@ -65,6 +65,21 @@ The test cases run on the H2 database, so you don't need to have a MySQL databas
 
 ## Decisions
 
+### Spring Boot
+
+I decided to update the Spring Boot version to 2.7.17, since its one of latest stable version that works with Java 11.
+The rest of the dependencies were also updated since Spring Boot uses BOM to maintain the dependencies versions.
+
+If I were to update the Java version (to 17 or 21), I would also update the Spring Boot version to the latest stable
+relase.(^3.X.X)
+
+### Spring Security
+
+I chose to use Spring Security to secure the API, creating a simple service that checks a certain header contains an
+specific value. This behaviour can be enhanced to use JWT tokens, for example, to make the API more secure or to make a
+request to an external service to validate the token. I also disabled the default behaviour of Spring Security that
+request an user/password to access the API.
+
 ### Docker-compose
 
 In order to facilitate the execution of the application, I created a docker-compose file that starts a MySQL database.
@@ -112,3 +127,6 @@ The testing profile would also be used, which would have different configuration
 Although it wasn't part of the requirements, I decided to write some tests for the application, using
 JUnit and Mockito to write the tests. I also used the H2 database to run the tests, so that I don't need to have a MySQL
 database running to run the tests.
+
+For end-to-end tests, I would use [Robot Framework](https://robotframework.org/), which is a very complete tool for
+testing APIs and is very easy to use. It is also very easy to maintain and has a very complete documentation. 
