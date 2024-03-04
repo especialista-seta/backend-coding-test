@@ -58,8 +58,12 @@ public class TaskService {
         return taskRepository
                 .findById(id)
                 .flatMap(task -> {
-                    taskEntity.setTaskId(task.getTaskId());
-                    return Optional.of(taskRepository.save(taskEntity));
+                    task.setCompleted(taskEntity.isCompleted());
+                    task.setDescription(taskEntity.getDescription());
+                    task.setPriority(taskEntity.getPriority());
+                    task.getSubTasks().clear();
+                    task.getSubTasks().addAll(taskEntity.getSubTasks());
+                    return Optional.of(taskRepository.save(task));
                 });
     }
 

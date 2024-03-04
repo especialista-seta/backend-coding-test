@@ -37,9 +37,17 @@ Develop the necessary functionalities for the application to be able to perform 
 In order to run the API, first we need to create a database in MySQL. You can do this by running the following command
 in the mysql folder:
 
+```docker-compose up```
+
+The first time the command is executed, it will create the mysql instance and run the scripts under database folder
+After that API can be started normally. The data will be persisted in the database, so you don't need to recreate the
+database every time you start the application.
+
+If there's a need to recreate the database, you can run the following command:
+
 ```docker-compose rm -v -f db && docker-compose up```
 
-After that API can be started normally.
+## Credentials
 
 The request are authenticated, so you need to use the following credentials:
 

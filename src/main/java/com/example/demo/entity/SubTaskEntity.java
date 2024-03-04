@@ -5,14 +5,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.io.Serializable;
 
 @Setter
 @Getter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class SubTaskEntity {
+public class SubTaskEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +30,4 @@ public class SubTaskEntity {
 
     private int priority;
 
-    @ManyToOne
-    @JoinColumn(name = "taskId", nullable = false, insertable = false, updatable = false)
-    private TaskEntity taskEntity;
 }
