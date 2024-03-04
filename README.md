@@ -30,6 +30,85 @@ Develop the necessary functionalities for the application to be able to perform 
 
 2. Create a new entity called *SubtaskEntity* that allows one task to have multiple subtasks.
 
-####
+# Result
 
-docker-compose rm -v -f db && docker-compose up
+## Instructions
+
+In order to run the API, first we need to create a database in MySQL. You can do this by running the following command
+in the mysql folder:
+
+```docker-compose rm -v -f db && docker-compose up```
+
+After that API can be started normally.
+
+The request are authenticated, so you need to use the following credentials:
+
+```AUTH_TOKEN_HEADER_NAME = "X-API-KEY"```
+
+```AUTH_TOKEN = "Guillermo"```
+
+These values are hardcoded in the application, but in a real application, they would be stored in a secure way, such as
+environment variables.
+
+## API Documentation
+
+After starting the application, you can access the API documentation at the following URL:
+
+```http://localhost:8443/swagger-ui/index.html```
+
+The documentation was generated using Swagger (OpenAPI 3.0) and it takes into account the login and the token
+requirements for the requests.
+
+## Running the tests
+
+The test cases run on the H2 database, so you don't need to have a MySQL database running to run the tests.
+
+## Decisions
+
+### Docker-compose
+
+In order to facilitate the execution of the application, I created a docker-compose file that starts a MySQL database.
+As of now, it is the only service in the docker-compose file, but it can be expanded to include other services such as
+the application itself. In this case, we would have a docker file for the application and the docker compose file would
+contain both the database and the application.
+
+With this approach, the same values used in the application.properties file
+could be used in the docker-compose file, making it easier to manage the application's configuration.
+
+### Architecture
+
+I chose to use a layered architecture, with the following layers: controller, service, repository and model. This
+architecture is widely used in Spring Boot applications and is very easy to understand and maintain. It separates the
+responsibilities of each layer, making the code more organized and easier to maintain. Also, it's easy to test, as each
+layer can be tested separately and fits well with the SOLID principles. For a small application or a mvp,
+this architecture is more than enough.
+
+In case of a larger application, I would consider using a hexagonal architecture, which is a more modern approach and
+fits well with microservices. It is a more complex architecture, but it is more scalable and easier to maintain in the
+long run. Another approach could be to use clean architecture, which is also a modern approach and is very similar to
+hexagonal architecture.
+
+### OpenAPI
+
+I chose to use OpenAPI to document the API. It is a widely used tool and is very easy to use. It generates a very
+complete documentation, which is very useful for the development team and for the users of the API. It also generates
+the client code, which can be used to consume the API.
+
+The documentation generated can be found at the following URL:
+
+```http://localhost:8443/api-docs```
+
+### Profiles
+
+In order to maintain simplicity, I chose to use only one profile. In a real application, we would have
+at least two profiles, the dev and prod profiles. The dev profile would be used for development, while the prod profile
+would be used for production. The prod profile would have different configurations, such as the database connection.
+Ideally, a profile for each environment would be created.
+
+The testing profile would also be used, which would have different configurations for testing, such as the database.
+
+### Testing
+
+Although it wasn't part of the requirements, I decided to write some tests for the application, using
+JUnit and Mockito to write the tests. I also used the H2 database to run the tests, so that I don't need to have a MySQL
+database running to run the tests.
